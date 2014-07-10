@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="entity.Order" table="orderbook" optimistic-lock="version">
+		<id name="id" column="order_id" type="int">
+			<generator class="native" />
+		</id>
+
+		<property name="userid" column = "user_id" ></property>
+		<property name="bookid" column = "book_id"></property>
+		<property name="borrowdate" column = "order_date"></property>
+		<property name="returndate" column = "return_date"></property>
+		<property name="ifreturn" column = "ifreturn"></property>
+
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,22 @@
+{
+    "aaData": [
+        {
+            "description": "Java",
+            "id": 1,
+            "name": "Java思想",
+            "type": "IT"
+        },
+        {
+            "description": "C++",
+            "id": 2,
+            "name": "C++思想",
+            "type": "IT"
+        },
+        {
+            "description": "C",
+            "id": 3,
+            "name": "C思想",
+            "type": "IT"
+        }
+    ]
+}

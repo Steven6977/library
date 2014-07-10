@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+xmlns:aop="http://www.springframework.org/schema/aop"
+xmlns:tx="http://www.springframework.org/schema/tx"
+xsi:schemaLocation="http://www.springframework.org/schema/beans 
+					http://www.springframework.org/schema/beans/spring-beans-2.5.xsd  
+					http://www.springframework.org/schema/tx 
+					http://www.springframework.org/schema/tx/spring-tx.xsd 
+                    http://www.springframework.org/schema/aop 
+                    http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+	<bean id="sessionFactory"
+	class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="configLocation" value="classpath:hibernate.cfg.xml"></property>
+	</bean>
+	<bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+	<!-- 事务管理 -->
+	<tx:annotation-driven proxy-target-class="true" transaction-manager="txManager"/>
+	<bean id="txManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<!-- 利用Spring Aop 为所有update save方法统一添加审计字段 -->
+	<aop:config>   
+        <aop:aspect id="AopClass" ref="aopClass">   
+            <!--配置dao包下所有update方法-->   
+            <aop:pointcut id="businessUpdate"  
+                expression="execution(* dao.*.update(..))" />   
+            <aop:before pointcut-ref="businessUpdate" method="doBeforeUpdate"/> 
+            <!--配置dao包下所有save方法--> 
+            <aop:pointcut id="businessSave"  
+                expression="execution(* dao.*.save(..))" />   
+            <aop:before pointcut-ref="businessSave" method="doBeforeSave"/>             
+        </aop:aspect>   
+    </aop:config>   
+
+	<bean id="aopClass" class="util.AopClass"/>
+
+	<!-- daos and services -->
+	<bean id="userDao" class="dao.UserDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<bean id="userService" class="service.UserServiceImpl">
+		<constructor-arg>
+			<ref bean="userDao" />
+		</constructor-arg>
+	</bean>
+	<bean id="bookDao" class="dao.BookDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<bean id="bookService" class="service.BookServiceImpl">
+		<constructor-arg index = "0">
+			<ref bean="bookDao" />
+		</constructor-arg>
+		<constructor-arg index = "1">
+			<ref bean="orderDao" />
+		</constructor-arg>
+	</bean>
+	<bean id="orderDao" class="dao.OrderDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<bean id="orderService" class="service.OrderServiceImpl">
+		<constructor-arg index = "0">
+			<ref bean="orderDao" />
+		</constructor-arg>
+		<constructor-arg index = "1">
+			<ref bean="bookDao" />
+		</constructor-arg>
+		<constructor-arg index = "2">
+			<ref bean="userDao" />
+		</constructor-arg>
+	</bean>
+	<!--
+
+	<bean id="dataServlet" class="servlet.DataServlet">
+	<property name="bookService" ref="bookService"></property>
+	</bean>
+	-->
+	<!-- action begin -->
+	<bean id="loginAction" class="action.LoginAction">
+		<property name="userService">
+			<ref bean="userService" />
+		</property>
+	</bean>
+	<bean id="BookManagement" class="action.BookManagementAction">
+		<property name="bookService">
+			<ref bean="bookService" />
+		</property>
+	</bean>
+	<bean id="OrderManagement" class="action.OrderManagementAction">
+		<property name="orderService">
+			<ref bean="orderService" />
+		</property>
+	</bean>
+	<bean id="UserManagement" class="action.UserManagementAction">
+		<property name="userService">
+			<ref bean="userService" />
+		</property>
+	</bean>
+	<bean id="logoutAction" class="action.LogoutAction"></bean>
+
+</beans>

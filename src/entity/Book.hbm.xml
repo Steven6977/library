@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="entity.Book" table="book" optimistic-lock="version">
+		<id name="id" column="book_id" type="int">
+			<generator class="native" />
+		</id>
+		<property name="name" column = "book_name"></property>
+		<property name="author" column = "book_author" ></property>
+		<property name="publisher" column = "book_publisher" ></property>
+		<property name="state" column = "book_state"></property>
+
+	</class>
+</hibernate-mapping>

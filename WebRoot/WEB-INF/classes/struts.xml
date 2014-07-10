@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="struts2" extends="struts-default">
+		<action name="login" class="loginAction">
+			<result name="success">WEB-INF/MyOrder/MyOrder.jsp</result>
+			<result name="error">userlogin.jsp</result>
+		</action>
+		
+		<action name="logout" class="logoutAction">
+			<result name="success">userlogin.jsp</result>
+		</action>
+		
+		<action name="bookManagement" class="BookManagement">
+			<result name="edit">WEB-INF/Book/Book-edit.jsp</result>
+			<result name="save">WEB-INF/Book/Book.jsp</result>
+			<result name="delete">WEB-INF/Book/Book.jsp</result>
+			<result name="add">WEB-INF/Book/Book.jsp</result>
+		</action>
+		
+		<action name="userManagement" class="UserManagement">
+			<result name="add">WEB-INF/User/User.jsp</result>
+			<result name="active">WEB-INF/User/User.jsp</result>
+			<result name="lock">WEB-INF/User/User.jsp</result>
+			<result name="delete">WEB-INF/User/User.jsp</result>
+			<result name="password">WEB-INF/Password/Password.jsp</result>
+			<result name="edit">WEB-INF/User/User-edit.jsp</result>
+			<result name="save">WEB-INF/User/User.jsp</result>
+		</action>
+		
+		<action name="orderManagement" class="OrderManagement">
+			<result name="add">WEB-INF/Order/Order.jsp</result>
+			<result name="ret">WEB-INF/Order/Order.jsp</result>
+			<result name="delete">WEB-INF/Order/Order.jsp</result>
+			<result name="new">WEB-INF/Order/Order.jsp</result>
+			<result name="deleteall">WEB-INF/Order/Order.jsp</result>
+		</action>
+		
+	</package>
+</struts>    
